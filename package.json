@@ -1,0 +1,16 @@
+{
+  "name": "campus-connect-tantra",
+  "version": "1.0.0",
+  "description": "IIIT Nagpur Campus Connect - Monorepo housing NestJS Backend & Lovable Frontend",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run start:dev",
+    "dev:frontend": "npm --prefix frontend/campus-connect-hub-main run dev -- --host",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend/campus-connect-hub-main run build",
+    "test:backend": "npm --prefix backend run test",
+    "test:frontend": "npm --prefix frontend/campus-connect-hub-main run test"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Campus Connect",
+    "slug": "campus-connect-iiitn",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#090d16"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iiitn.campusconnect"
+    },
+    "android": {
+      "package": "com.iiitn.campusconnect",
+      "adaptiveIcon": {
+        "backgroundColor": "#090d16"
+      }
+    }
+  }
+}

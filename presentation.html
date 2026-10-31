@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CampusConnect - Pitch Deck</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --purple: #8b5cf6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .deck-container {
+      width: 100%;
+      max-width: 1020px;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide {
+      display: none;
+      flex: 1;
+      padding: 48px 56px;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeIn 0.3s ease;
+    }
+    .slide.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .slide-category {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .slide-badge {
+      font-size: 0.85rem;
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--accent-light);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    
+    /* Layout components */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .card.highlight {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.08);
+    }
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      background: #334155;
+      color: #e2e8f0;
+      margin-right: 4px;
+      margin-top: 6px;
+    }
+    
+    /* Navigation Controls */
+    .controls {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      align-items: center;
+    }
+    button.nav-btn {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+    button.nav-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .progress-dots {
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.3);
+    }
+    .key-hint {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    
+    /* Print & Presentation mode */
+    @media print {
+      body { background: #fff; color: #000; padding: 0; }
+      .deck-container { box-shadow: none; border: none; max-width: 100%; aspect-ratio: auto; }
+      .slide { display: flex !important; page-break-after: always; height: 100vh; padding: 40px; }
+      .controls { display: none; }
+      .card { border-color: #cbd5e1; background: #f8fafc; color: #000; }
+      .card p { color: #475569; }
+      .slide-header { border-color: #cbd5e1; }
+      .slide-footer { border-color: #cbd5e1; color: #64748b; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="deck-container" id="deck">
+    
+    <!-- SLIDE 1: Title -->
+    <div class="slide active">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">TANTRA HACKATHON PRESENTATION</div>
+          <div class="slide-title">CampusConnect</div>
+        </div>
+        <div class="slide-badge">IIIT Nagpur</div>
+      </div>
+      <div class="slide-content" style="text-align: center; justify-content: center; align-items: center;">
+        <h1 style="font-size: 2.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px;">
+          The Unified Digital Operating System<br/>for Campus Life
+        </h1>
+        <p style="font-size: 1.2rem; color: var(--muted); max-width: 720px; margin-bottom: 28px;">
+          Bringing Mess Management, Clubs & Events, and a Secure P2P Campus Marketplace into one cohesive, role-driven platform.
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <span class="pill" style="font-size: 0.85rem; padding: 6px 14px; background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3);">⚡ Production Ready</span>
+          <span class="pill" style="font-size: 0.85rem; padding: 6px 14px; background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3);">📱 Web + Mobile</span>
+          <span class="pill" style="font-size: 0.85rem; padding: 6px 14px; background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3);">🔒 Role-Based RBAC</span>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Team CampusConnect</span>
+        <span>Slide 1 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">The Problem</div>
+          <div class="slide-title">Fragmented Campus Experience</div>
+        </div>
+        <div class="slide-badge">Pain Points</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="color: #f87171;">🍽️ Mess Disconnect</h3>
+            <p>Students have no real-time visibility into weekly dining menus. Feedback is lost in verbal complaints, leaving mess managers with zero actionable quality metrics.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: #fbbf24;">📢 Club Chaos</h3>
+            <p>Important event announcements, registrations, and club recruitment get buried across dozens of chaotic WhatsApp and Telegram groups with high noise ratios.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: #60a5fa;">🛒 Unsafe Commerce</h3>
+            <p>Buying/selling textbooks, cycles, and lab kits relies on unmoderated chat spam without verified student identities, ratings, or organized chat trails.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>The core issue: Crucial daily student utilities are scattered and unorganized.</span>
+        <span>Slide 2 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: The Solution -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">The Solution</div>
+          <div class="slide-title">A Single, Purpose-Built Platform</div>
+        </div>
+        <div class="slide-badge">Overview</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card highlight">
+            <h3 style="color: var(--accent-light);">1. Smart Dining Hub</h3>
+            <p>Published real-time daily menus (Breakfast, Lunch, Snacks, Dinner), instant star ratings, structured feedback analytics, and urgent mess notices.</p>
+            <div style="margin-top: auto; padding-top: 12px;">
+              <span class="pill">Menu Calendar</span>
+              <span class="pill">Sentiment Ratings</span>
+            </div>
+          </div>
+          <div class="card highlight">
+            <h3 style="color: var(--emerald);">2. Clubs & Events Portal</h3>
+            <p>Official club discovery, one-click 1-second event registration, live waitlists, capacity tracking, and targeted club broadcast announcements.</p>
+            <div style="margin-top: auto; padding-top: 12px;">
+              <span class="pill">Waitlist Support</span>
+              <span class="pill">Verified Leads</span>
+            </div>
+          </div>
+          <div class="card highlight">
+            <h3 style="color: var(--purple);">3. CampusCart P2P</h3>
+            <p>Secure student-to-student marketplace. Verified college email logins, in-app buyer-seller chat, peer reviews, and moderator review queues.</p>
+            <div style="margin-top: auto; padding-top: 12px;">
+              <span class="pill">In-App Chat</span>
+              <span class="pill">Moderated</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Connecting Students, Club Leads, Mess Admins, and Super Admins seamlessly.</span>
+        <span>Slide 3 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Core Pillars Deep Dive -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Module Breakdown</div>
+          <div class="slide-title">Built for Campus Workflows</div>
+        </div>
+        <div class="slide-badge">Features</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <h3>🍽️ Mess & Food Quality Assurance</h3>
+            <p style="margin-bottom: 8px;"><strong>For Students:</strong> Check today's meal ahead of time; rate meals 1-5 stars with detailed taste/hygiene feedback.</p>
+            <p><strong>For Administrators:</strong> Dedicated dashboard to schedule weekly meal rotations and track average satisfaction ratings historically.</p>
+          </div>
+          <div class="card">
+            <h3>🎪 Clubs & Automated Event Lifecycle</h3>
+            <p style="margin-bottom: 8px;"><strong>Registration Engine:</strong> Automated capacity guards, deadlined registrations, and instant status updates.</p>
+            <p><strong>Club Showcase:</strong> Official profile pages with leadership rosters, event archives, and direct student subscriber updates.</p>
+          </div>
+          <div class="card">
+            <h3>🛍️ CampusCart Peer-to-Peer Market</h3>
+            <p style="margin-bottom: 8px;"><strong>Category Sorting:</strong> Books, Electronics, Cycles, Room essentials, and Lab kits.</p>
+            <p><strong>Trust Layer:</strong> Integrated buyer inquiry threads, transaction states (Active/Reserved/Sold), and seller reliability scores.</p>
+          </div>
+          <div class="card">
+            <h3>🔔 Centralized Push Notifications</h3>
+            <p style="margin-bottom: 8px;"><strong>Contextual Alerts:</strong> Timely notifications for event schedule updates, marketplace offers, and dining circulars.</p>
+            <p><strong>Expo Integration:</strong> Ready for mobile push tokens so students never miss a deadline.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Complete end-to-end functionality across web & mobile.</span>
+        <span>Slide 4 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Role-Based Access Control -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Security & Governance</div>
+          <div class="slide-title">Strict Role-Based Access (RBAC)</div>
+        </div>
+        <div class="slide-badge">Security</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-4">
+          <div class="card">
+            <h3 style="font-size: 1rem; color: #93c5fd;">🎓 Student</h3>
+            <p style="font-size: 0.85rem;">Access all student hubs, register for events, rate meals, post & buy items on CampusCart, chat with peers.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1rem; color: #a7f3d0;">🏆 Club Lead</h3>
+            <p style="font-size: 0.85rem;">Create and manage club events, monitor attendee lists, broadcast official announcements to members.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1rem; color: #fde68a;">👨‍🍳 Mess Admin</h3>
+            <p style="font-size: 0.85rem;">Publish meal menus, post urgent dining circulars, review real-time student rating metrics and sentiment.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1rem; color: #fca5a5;">🛡️ App Admin</h3>
+            <p style="font-size: 0.85rem;">Supervise total system state, user roles, audit trails, and moderate flagged CampusCart listings.</p>
+          </div>
+        </div>
+        <div class="card highlight" style="margin-top: 20px;">
+          <p style="font-size: 0.95rem; color: var(--text);">
+            <strong>Zero Trust Security:</strong> Every backend controller endpoint is safeguarded with NestJS Guards, JWT token authentication, and role validation decorators.
+          </p>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Clean separation of concerns keeps data secure and organized.</span>
+        <span>Slide 5 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Technical Architecture -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">System Architecture</div>
+          <div class="slide-title">Modern & Resilient Tech Stack</div>
+        </div>
+        <div class="slide-badge">Engineering</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="color: var(--accent-light);">🖥️ Frontend Client</h3>
+            <p><strong>Stack:</strong> React 19, TanStack Start & Router, Vite, Tailwind CSS, Radix UI.</p>
+            <p style="margin-top: 8px;"><strong>Perks:</strong> High-speed client-side routing, responsive UI, accessible design primitives, and optimistic updates.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: var(--emerald);">⚙️ Backend Monolith</h3>
+            <p><strong>Stack:</strong> NestJS 12, TypeScript, RESTful API Gateway, Swagger / OpenAPI.</p>
+            <p style="margin-top: 8px;"><strong>Perks:</strong> Enterprise modular architecture, DTO validation with class-validator, comprehensive error filters.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: var(--purple);">🗄️ Persistence & Mobile</h3>
+            <p><strong>Stack:</strong> PostgreSQL, Prisma ORM, Expo / React Native.</p>
+            <p style="margin-top: 8px;"><strong>Perks:</strong> Type-safe database queries, automated SQL migrations, relational indexing, and mobile push readiness.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Modular design allows effortless scaling to thousands of active campus users.</span>
+        <span>Slide 6 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Key Differentiators -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Why It Stands Out</div>
+          <div class="slide-title">What Makes CampusConnect Different?</div>
+        </div>
+        <div class="slide-badge">Advantages</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="color: #38bdf8;">🎯 All-in-One Utility</h3>
+            <p>Eliminates the friction of 10+ disjointed college WhatsApp groups and forgotten Google Forms by centralizing campus needs under a single authentication umbrella.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: #4ade80;">📊 Accountable Quality</h3>
+            <p>Mess feedback is structured and visible to authorities, bridging the gap between students and caterers with undeniable data-backed metrics.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: #f472b6;">🤝 Closed-Loop Trust</h3>
+            <p>Only verified college members (`@iiitn.ac.in`) can post or transact, drastically reducing spam, scam risks, and unauthorized campus entry.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>A solution designed from the ground up for students, by students.</span>
+        <span>Slide 7 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Live Demo Flow -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Live Walkthrough</div>
+          <div class="slide-title">Demonstration Flow for Judges</div>
+        </div>
+        <div class="slide-badge">Live Demo</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-4">
+          <div class="card">
+            <h3 style="font-size: 1rem; color: var(--accent-light);">Step 1: Onboarding</h3>
+            <p style="font-size: 0.85rem;">Login with verified credentials. Show user role badge and personalized home dashboard with quick shortcuts.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1rem; color: var(--emerald);">Step 2: Mess Rating</h3>
+            <p style="font-size: 0.85rem;">Inspect today's Lunch menu, submit a 5-star rating with taste feedback, and view the historical ratings trend.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1rem; color: var(--amber);">Step 3: Club Event</h3>
+            <p style="font-size: 0.85rem;">Navigate to upcoming tech club workshop, register instantly, and observe real-time capacity and registration status.</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 1rem; color: var(--purple);">Step 4: CampusCart</h3>
+            <p style="font-size: 0.85rem;">Browse available peer listings (calculators, books), open a listing, and send a buyer inquiry to start an in-app chat.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Clean, responsive UI with zero latency and immediate feedback.</span>
+        <span>Slide 8 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Scalability & Future Roadmap -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">The Future</div>
+          <div class="slide-title">Roadmap & Campus Expansion</div>
+        </div>
+        <div class="slide-badge">Roadmap</div>
+      </div>
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card">
+            <h3 style="color: var(--accent-light);">💳 Phase 1: Escrow & UPI</h3>
+            <p>Direct UPI QR integration with in-app milestone confirmation and verified pickup handshake for CampusCart transactions.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: var(--emerald);">🎫 Phase 2: QR Ticketing</h3>
+            <p>Dynamic QR attendance codes for registered club attendees to eliminate manual entry queues at auditoriums.</p>
+          </div>
+          <div class="card">
+            <h3 style="color: var(--purple);">🏫 Phase 3: Multi-Campus</h3>
+            <p>Tenant partitioning to deploy CampusConnect across any college or university with plug-and-play SSO integration.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span>Engineered with a modular architecture ready for effortless feature adoption.</span>
+        <span>Slide 9 / 10</span>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Conclusion / Q&A -->
+    <div class="slide">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Conclusion</div>
+          <div class="slide-title">Thank You!</div>
+        </div>
+        <div class="slide-badge">Q & A</div>
+      </div>
+      <div class="slide-content" style="text-align: center; justify-content: center; align-items: center;">
+        <h2 style="font-size: 2.4rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">
+          CampusConnect
+        </h2>
+        <p style="font-size: 1.15rem; color: var(--accent-light); margin-bottom: 24px; font-weight: 500;">
+          Connecting Campuses, Empowering Students.
+        </p>
+        <div class="card" style="max-width: 540px; text-align: left; padding: 20px 24px;">
+          <p style="margin-bottom: 8px;"><strong>Fullstack Implementation:</strong> NestJS + Prisma + PostgreSQL + React + Expo</p>
+          <p style="margin-bottom: 8px;"><strong>API Documentation:</strong> Swagger UI available at <code>/api/docs</code></p>
+          <p><strong>Status:</strong> Ready for deployment across student dorms & campuses.</p>
+        </div>
+        <p style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-top: 24px;">
+          We are ready for your questions!
+        </p>
+      </div>
+      <div class="slide-footer">
+        <span>Team CampusConnect • Tantra Hackathon</span>
+        <span>Slide 10 / 10</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation Buttons & Progress -->
+  <div class="controls">
+    <button class="nav-btn" onclick="prevSlide()">← Previous</button>
+    <div class="progress-dots" id="dotsContainer"></div>
+    <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    <button class="nav-btn" style="background: #2563eb; border-color: #2563eb;" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+  <p class="key-hint" style="margin-top: 10px;">Tip: Use the <strong>Left / Right Arrow Keys</strong> or <strong>Spacebar</strong> to navigate through slides.</p>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('dotsContainer');
+
+    // Create dots
+    slides.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (idx === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(idx);
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= slides.length) index = slides.length - 1;
+      currentSlide = index;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === currentSlide);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function goToSlide(index) {
+      showSlide(index);
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+  </script>
+</body>
+</html>

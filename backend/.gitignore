@@ -1,0 +1,16 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build and dependencies
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
